@@ -1,90 +1,55 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const cloudinary = require('cloudinary').v2;
+// AQUI ESTÁ O SEGREDO: COLOQUE O LINK DO RENDER AQUI!
+const API = 'https://estilo-back.onrender.com'; 
 
-const app = express(); // 1º: Criamos o app primeiro que tudo!
+let allProducts = [];
+let cart = JSON.parse(localStorage.getItem('ilha_cart')) || [];
 
-// --- CONFIGURAÇÃO DE SEGURANÇA (CORS) ---
-// Libera geral para testes, depois você trava no link da Vercel
-app.use(cors()); 
-
-app.use(express.json());
-
-// --- CONEXÃO COM O BANCO ---
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ Estilo da Ilha conectado ao MongoDB Atlas'))
-  .catch(err => console.error('❌ Erro na conexão do banco:', err));
-
-// --- CONFIGURAÇÃO CLOUDINARY ---
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_API_SECRET
+document.addEventListener('DOMContentLoaded', () => {
+    fetchData();
+    updateCartUI();
 });
 
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'estilo-ilha-uploads',
-    allowed_formats: ['jpg', 'png', 'jpeg', 'webp']
-  }
-});
-const upload = multer({ storage });
+async function fetchData() {
+    try {
+        console.log("Tentando conectar em:", API);
+        const [pRes, cRes, bRes] = await Promise.all([
+            fetch(`${API}/products`), fetch(`${API}/categories`), fetch(`${API}/banners`)
+        ]);
 
-// --- MODELOS ---
-const Product = mongoose.model('Product', new mongoose.Schema({
-  nome: String, preco: Number, estoque: Number, categoria: String, descricao: String, imagem_url: String, createdAt: { type: Date, default: Date.now }
-}));
+        allProducts = await pRes.json();
+        renderProducts(allProducts);
+        renderSidebar(await cRes.json());
+        renderBanners(await bRes.json());
+    } catch (e) {
+        console.error("ERRO DE CONEXÃO COM O RENDER:", e);
+        document.getElementById('product-grid').innerHTML = '<p class="col-span-full text-center text-red-600 font-bold">ERRO AO CARREGAR PRODUTOS. VERIFIQUE O BACKEND.</p>';
+    }
+}
 
-const Category = mongoose.model('Category', new mongoose.Schema({ nome: String }));
-const Banner = mongoose.model('Banner', new mongoose.Schema({ imagem_url: String }));
+function renderProducts(list) {
+    const grid = document.getElementById('product-grid');
+    if(!grid) return;
+    grid.innerHTML = list.map(p => `
+        <div class="cursor-pointer group" onclick="window.location.href='product.html?id=${p._id}'">
+            <div class="relative aspect-square rounded-[24px] overflow-hidden bg-[#111] mb-4">
+                <img src="${p.imagem_url}" class="w-full h-full object-cover transition group-hover:scale-110">
+                <button onclick="event.stopPropagation(); addToCart('${p._id}', '${p.nome}', ${p.preco}, '${p.imagem_url}')" class="absolute bottom-4 right-4 bg-white text-black w-10 h-10 rounded-full font-black text-xl shadow-xl">+</button>
+            </div>
+            <p class="text-[9px] font-black text-red-600 uppercase mb-1">${p.categoria}</p>
+            <h4 class="text-xs font-black uppercase">R$ ${p.preco.toFixed(2)} | ${p.nome}</h4>
+        </div>
+    `).join('');
+}
 
-const Order = mongoose.model('Order', new mongoose.Schema({
-  numero: String, cliente: { nome: String, telefone: String }, itens: Array, total: Number, entrega: String, pagamento: String, status: { type: String, default: 'novo' }, createdAt: { type: Date, default: Date.now }
-}));
+function renderBanners(banners) {
+    const slider = document.getElementById('banner-slider');
+    if (!slider || banners.length === 0) return;
+    slider.innerHTML = banners.map(b => `<img src="${b.imagem_url}" onclick="window.open('${b.imagem_url}', '_blank')">`).join('');
+    // Forçar altura no JS se o CSS falhar
+    document.querySelector('.hero-container').style.height = '60vh';
+}
 
-// --- ROTAS DA API ---
-
-// Produtos
-app.get('/api/products', async (req, res) => res.json(await Product.find().sort({ createdAt: -1 })));
-app.post('/api/products', upload.single('image'), async (req, res) => {
-  try {
-    const p = new Product({ ...req.body, imagem_url: req.file.path });
-    await p.save();
-    res.json(p);
-  } catch (err) { res.status(400).json({ error: 'Erro ao lançar produto' }); }
-});
-app.delete('/api/products/:id', async (req, res) => { await Product.findByIdAndDelete(req.params.id); res.json({ msg: 'Removido' }); });
-
-// Categorias
-app.get('/api/categories', async (req, res) => res.json(await Category.find()));
-app.post('/api/categories', async (req, res) => { const c = new Category(req.body); await c.save(); res.json(c); });
-app.delete('/api/categories/:id', async (req, res) => { await Category.findByIdAndDelete(req.params.id); res.json({ msg: 'Removida' }); });
-
-// Banners
-app.get('/api/banners', async (req, res) => res.json(await Banner.find()));
-app.post('/api/banners', upload.single('image'), async (req, res) => {
-  try {
-    const b = new Banner({ imagem_url: req.file.path });
-    await b.save();
-    res.json(b);
-  } catch (err) { res.status(400).json({ error: 'Erro no banner' }); }
-});
-app.delete('/api/banners/:id', async (req, res) => { await Banner.findByIdAndDelete(req.params.id); res.json({ msg: 'Removido' }); });
-
-// Pedidos
-app.post('/api/orders', async (req, res) => {
-  try {
-    const o = new Order(req.body);
-    await o.save();
-    res.json(o);
-  } catch (err) { res.status(400).json({ error: 'Erro ao salvar pedido' }); }
-});
-
-// --- INICIALIZAÇÃO ---
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Servidor voando na porta ${PORT}`));
+// ... (Outras funções toggleMenu, toggleCart, updateCartUI que já temos) ...
+function toggleMenu(o) { document.getElementById('sidebar').classList.toggle('open', o); document.getElementById('menu-overlay').classList.toggle('active', o); }
+function toggleCart(o) { document.getElementById('cart-drawer').classList.toggle('open', o); document.getElementById('menu-overlay').classList.toggle('active', o); }
+function updateCartUI() { document.getElementById('cart-count').innerText = cart.reduce((acc, i) => acc + i.qty, 0); }
