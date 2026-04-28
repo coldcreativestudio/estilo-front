@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produto | ESTILO DA ILHA</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-black text-white antialiased">
+
+  <div class="promo-bar">Frete Grátis p/ todo BR compras acima de R$ 399,90</div>
+
+  <header class="fixed top-[40px] w-full z-50 bg-black border-b border-white/5 px-6 py-2">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <button onclick="window.location.href='index.html'" class="w-24 text-xs font-black uppercase tracking-[0.2em] hover:text-red-600 transition">
+        ← VOLTAR
+      </button>
+      
+      <img src="assets/logo.PNG" alt="Estilo da Ilha" class="logo-img h-16 cursor-pointer" onclick="location.href='index.html'">
+      
+      <div class="w-24"></div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 pt-48 pb-20">
+    <div id="product-container" class="grid grid-cols-1 lg:grid-cols-2 gap-16"></div>
+    <section class="mt-24 border-t border-white/10 pt-16">
+      <h3 class="text-red-600 font-[900] text-2xl mb-8 uppercase">Descrição do Produto</h3>
+      <p id="full-desc" class="text-gray-400 text-lg leading-relaxed font-medium max-w-4xl"></p>
+    </section>
+  </main>
+
+  <script src="js/product.js"></script>
+</body>
+</html>
