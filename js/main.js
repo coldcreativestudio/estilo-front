@@ -103,3 +103,43 @@ function removeFromCart(id) { cart = cart.filter(i => i.id !== id); localStorage
 function toggleMenu(o) { document.getElementById('sidebar').classList.toggle('open', o); document.getElementById('menu-overlay').classList.toggle('active', o); }
 function toggleCart(o) { document.getElementById('cart-drawer').classList.toggle('open', o); document.getElementById('menu-overlay').classList.toggle('active', o); }
 document.getElementById('menu-overlay').addEventListener('click', () => { toggleMenu(false); toggleCart(false); });
+// --- ADICIONE ISTO NO FINAL DO JS/MAIN.JS ---
+document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (cart.length === 0) return alert("Sacola vazia!");
+
+    // 1. GERA O NÚMERO DO PEDIDO (#PED-20260429-001)
+    const now = new Date();
+    const dataRef = now.getFullYear() + (now.getMonth() + 1).toString().padStart(2, '0') + now.getDate().toString().padStart(2, '0');
+    const pedidoId = `#PED-${dataRef}-${Math.floor(100 + Math.random() * 900)}`;
+
+    // 2. CAPTURA OS DADOS
+    const nome = document.getElementById('cust-nome').value;
+    const tel = document.getElementById('cust-tel').value;
+    const endereco = document.getElementById('cust-endereco').value;
+    const entrega = document.querySelector('input[name="entrega"]:checked').value;
+    const pagamento = document.querySelector('input[name="pagamento"]:checked').value;
+    
+    const subtotal = cart.reduce((acc, i) => acc + (i.preco * i.qty), 0);
+    const frete = parseFloat(document.querySelector('input[name="entrega"]:checked').dataset.price || 0);
+    const total = subtotal + frete;
+
+    // 3. MONTA A MENSAGEM FORMATADA
+    let msg = `Olá! Gostaria de fazer o seguinte pedido:\n\n`;
+    msg += `🛍 *PEDIDO ${pedidoId}*\n\n`;
+    msg += `📦 *Itens:*\n`;
+    
+    cart.forEach(item => {
+        msg += `• ${item.nome} x${item.qty} - R$ ${(item.preco * item.qty).toFixed(2)}\n`;
+    });
+
+    msg += `\n💰 *Total: R$ ${total.toFixed(2)}*\n\n`;
+    msg += `🚚 *Entrega:* ${entrega}\n`;
+    if (entrega === "Entrega em casa") msg += `📍 *Endereço:* ${endereco}\n`;
+    msg += `\n💳 *Pagamento:* ${pagamento}\n\n`;
+    msg += `👤 *Cliente:* ${nome}\n`;
+    msg += `📞 *Tel:* ${tel}`;
+
+    // 4. REDIRECIONA
+    window.location.href = `https://wa.me/5598984360341?text=${encodeURIComponent(msg)}`;
+});

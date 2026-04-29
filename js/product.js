@@ -29,23 +29,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function renderDetail(p) {
     const container = document.getElementById('product-detail');
-    container.innerHTML = `
-        <div class="flex flex-col md:flex-row gap-12">
-            <div class="w-full md:w-1/2 aspect-square rounded-[40px] overflow-hidden bg-[#111]">
-                <img src="${p.imagem_url}" class="w-full h-full object-cover">
-            </div>
-            <div class="flex-1 flex flex-col justify-center">
-                <p class="text-red-600 font-black uppercase text-xs mb-2 tracking-[0.3em]">${p.categoria}</p>
-                <h1 class="text-4xl font-[900] uppercase tracking-tighter mb-4 leading-none">${p.nome}</h1>
-                <p class="text-2xl font-black text-white mb-6">R$ ${p.preco.toFixed(2)}</p>
-                <p class="text-gray-400 text-sm leading-relaxed mb-10">${p.descricao}</p>
-                
-                <button onclick="addToCartAndGo('${p._id}', '${p.nome}', ${p.preco}, '${p.imagem_url}')" class="bg-red-600 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-red-700 transition shadow-2xl shadow-red-600/20">
-                    Adicionar à Sacola
-                </button>
-            </div>
+    // --- DENTRO DA FUNÇÃO renderDetail(p) NO JS/PRODUCT.JS ---
+container.innerHTML = `
+    <div class="flex flex-col md:flex-row gap-10 items-start">
+        <div class="w-full md:w-1/2">
+            <img src="${p.imagem_url}" class="rounded-[30px] w-full object-cover shadow-2xl">
         </div>
-    `;
+        <div class="flex-1 w-full">
+            <p class="text-red-600 font-black uppercase text-xs mb-2 tracking-widest">${p.categoria}</p>
+            <h1 class="text-4xl font-black uppercase mb-4 leading-tight">${p.nome}</h1>
+            <p class="text-2xl font-black mb-6 text-white">R$ ${p.preco.toFixed(2)}</p>
+            <p class="text-gray-400 leading-relaxed mb-8">${p.descricao}</p>
+            <button onclick="addToCartAndGo('${p._id}', '${p.nome}', ${p.preco}, '${p.imagem_url}')" 
+                class="bg-red-600 w-full py-5 rounded-2xl font-black uppercase tracking-widest text-sm shadow-lg shadow-red-600/20">
+                Adicionar à Sacola
+            </button>
+        </div>
+    </div>
+`;
 }
 
 function addToCartAndGo(id, nome, preco, imagem) {
