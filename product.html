@@ -1,36 +1,63 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Produto | ESTILO DA ILHA</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESTILO DA ILHA | Streetwear</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="bg-black text-white antialiased">
-
-  <div class="promo-bar">Frete Grátis p/ todo BR compras acima de R$ 399,90</div>
-
-  <header class="fixed top-[40px] w-full z-50 bg-black border-b border-white/5 px-6 py-2">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
-      <button onclick="window.location.href='index.html'" class="w-24 text-xs font-black uppercase tracking-[0.2em] hover:text-red-600 transition">
-        ← VOLTAR
-      </button>
-      
-      <img src="assets/logo.png" alt="Estilo da Ilha" class="logo-img h-16 cursor-pointer" onclick="location.href='index.html'">
-      
-      <div class="w-24"></div>
+    <div class="promo-bar" style="position:fixed; top:0; width:100%; height:40px; background:#ff0000; z-index:1100; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; text-transform:uppercase;">
+        Frete Grátis p/ todo BR compras acima de R$ 399,90
     </div>
-  </header>
 
-  <main class="max-w-7xl mx-auto px-6 pt-48 pb-20">
-    <div id="product-container" class="grid grid-cols-1 lg:grid-cols-2 gap-16"></div>
-    <section class="mt-24 border-t border-white/10 pt-16">
-      <h3 class="text-red-600 font-[900] text-2xl mb-8 uppercase">Descrição do Produto</h3>
-      <p id="full-desc" class="text-gray-400 text-lg leading-relaxed font-medium max-w-4xl"></p>
-    </section>
-  </main>
+    <aside id="sidebar">
+        <div class="p-8 h-full flex flex-col">
+            <div class="flex justify-between items-center mb-10">
+                <img src="assets/logo.PNG" class="h-12">
+                <button onclick="toggleMenu(false)" class="text-white text-[10px] font-black border border-white/20 px-3 py-1 rounded">X</button>
+            </div>
+            <nav id="sidebar-nav" class="flex flex-col gap-4 flex-1"></nav>
+        </div>
+    </aside>
 
-  <script src="js/product.js"></script>
+    <div id="cart-drawer">
+        <div class="p-8 flex flex-col h-full">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-red-600 font-black text-2xl uppercase">Sacola</h2>
+                <button onclick="toggleCart(false)" class="text-white text-xs border border-white/20 px-3 py-1 rounded">X</button>
+            </div>
+            <div id="cart-items" class="flex-1 overflow-y-auto space-y-4"></div>
+            <div class="border-t border-white/10 pt-6 mt-4">
+                <div class="flex justify-between text-2xl font-black mb-6 uppercase"><span>Total</span><span id="total-final">R$ 0,00</span></div>
+                <button onclick="window.location.href='https://wa.me/5598984360341'" class="bg-red-600 w-full py-5 rounded-xl font-black uppercase text-xs">Finalizar no WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="menu-overlay"></div>
+
+    <header>
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center py-4">
+            <button onclick="toggleMenu(true)" class="text-white text-2xl">☰</button>
+            <img src="assets/logo.PNG" class="logo-img h-16 cursor-pointer" onclick="location.reload()">
+            <button onclick="toggleCart(true)" class="relative">
+                🛒<span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">0</span>
+            </button>
+        </div>
+        <div class="max-w-xl mx-auto px-6 pb-4">
+            <input type="text" placeholder="BUSCAR..." class="w-full bg-[#111] p-3 rounded-sm border border-white/10 text-[10px] font-bold outline-none uppercase">
+        </div>
+    </header>
+
+    <div class="main-content">
+        <section class="hero-container" style="height:60vh; background:#050505; overflow:hidden;">
+            <div id="banner-slider" class="flex h-full transition-transform duration-700"></div>
+        </section>
+        <main id="product-grid" class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8"></main>
+    </div>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
