@@ -147,8 +147,35 @@ function openZoom(url) {
 }
 
 function removeFromCart(id) { cart = cart.filter(i => i.id !== id); localStorage.setItem('ilha_cart', JSON.stringify(cart)); updateCartUI(); }
-function toggleMenu(o) { document.getElementById('sidebar').classList.toggle('open', o); document.getElementById('menu-overlay').classList.toggle('active', o); }
-function toggleCart(o) { document.getElementById('cart-drawer').classList.toggle('open', o); document.getElementById('menu-overlay').classList.toggle('active', o); }
+function toggleMenu(o) {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('menu-overlay');
+    if (sidebar) sidebar.classList.toggle('open', o);
+    if (overlay) overlay.classList.toggle('active', o);
+}
+
+function toggleCart(o) {
+    const cart = document.getElementById('cart-drawer');
+    const overlay = document.getElementById('menu-overlay');
+    if (cart) cart.classList.toggle('open', o);
+    if (overlay) overlay.classList.toggle('active', o);
+}
+
+// Garanta que o listener do overlay no final do arquivo esteja assim:
+const overlay = document.getElementById('menu-overlay');
+if (overlay) {
+    overlay.addEventListener('click', () => {
+        toggleMenu(false);
+        toggleCart(false);
+    });
+}
+
+function toggleCart(o) {
+    const cart = document.getElementById('cart-drawer');
+    const overlay = document.getElementById('menu-overlay');
+    if (cart) cart.classList.toggle('open', o);
+    if (overlay) overlay.classList.toggle('active', o);
+}
 document.getElementById('menu-overlay').addEventListener('click', () => { toggleMenu(false); toggleCart(false); });
 // --- ADICIONE ISTO NO FINAL DO JS/MAIN.JS ---
 document.getElementById('checkout-form').addEventListener('submit', function(e) {
