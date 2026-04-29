@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESTILO DA ILHA</title>
+    <title>ESTILO DA ILHA | Streetwear</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -11,25 +11,43 @@
     <div class="promo-bar">Frete Grátis p/ todo BR compras acima de R$ 399,90</div>
 
     <aside id="sidebar">
-        <div class="p-8"><img src="assets/logo.PNG" class="h-16 mb-10"><nav id="sidebar-nav" class="flex flex-col gap-4"></nav></div>
+        <div class="p-8">
+            <img src="assets/logo.PNG" class="h-16 mb-10">
+            <nav id="sidebar-nav" class="flex flex-col gap-4"></nav>
+        </div>
     </aside>
 
-    <div id="cart-drawer">... (mesma estrutura anterior) ...</div>
+    <div id="cart-drawer">
+        <div class="p-8 flex flex-col h-full">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-red-600 font-black text-2xl uppercase">Sacola</h2>
+                <button onclick="toggleCart(false)" class="text-white text-xs border border-white/20 px-3 py-1 rounded">X</button>
+            </div>
+            <div id="cart-items" class="flex-1 overflow-y-auto space-y-4 custom-scroll"></div>
+            <div class="border-t border-white/10 pt-6 mt-4">
+                <div class="flex justify-between text-2xl font-black mb-6 uppercase"><span>Total</span><span id="total-final">R$ 0,00</span></div>
+                <button onclick="window.location.href='https://wa.me/5598984360341'" class="bg-red-600 w-full py-5 rounded-xl font-black uppercase tracking-widest text-xs">Finalizar no WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
     <div id="menu-overlay"></div>
 
     <header>
-        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center py-4">
             <button onclick="toggleMenu(true)" class="text-white text-2xl">☰</button>
-            <img src="assets/logo.PNG" class="logo-img cursor-pointer" onclick="location.reload()">
-            <button onclick="toggleCart(true)" class="relative">🛒<span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-[10px] w-5 h-5 flex items-center justify-center rounded-full">0</span></button>
+            <img src="assets/logo.PNG" class="logo-img cursor-pointer h-16" onclick="location.reload()">
+            <button onclick="toggleCart(true)" class="relative">
+                🛒<span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">0</span>
+            </button>
         </div>
-        <div class="max-w-xl mx-auto px-6 mt-4">
-            <input type="text" id="search-input" placeholder="BUSCAR..." class="w-full bg-[#111] p-3 rounded-sm border border-white/10 text-[10px] font-bold">
+        <div class="max-w-xl mx-auto px-6 pb-4">
+            <input type="text" placeholder="BUSCAR..." class="w-full bg-[#111] p-3 rounded-sm border border-white/10 text-[10px] font-bold outline-none uppercase">
         </div>
     </header>
 
     <div class="main-content">
-        <section class="hero-container bg-[#050505] overflow-hidden">
+        <section class="hero-container bg-[#050505] overflow-hidden" style="height: 60vh;">
             <div id="banner-slider" class="flex h-full transition-transform duration-700"></div>
         </section>
         <main id="product-grid" class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8"></main>
