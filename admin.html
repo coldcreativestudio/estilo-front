@@ -8,49 +8,53 @@
 </head>
 <body>
     <header class="admin-header max-w-7xl mx-auto">
-        <h1 class="text-3xl font-black uppercase tracking-tighter">PAINEL <span class="text-red-600">ADMIN</span></h1>
-        <a href="index.html" style="background:#fff; color:#000; padding:10px 25px; border-radius:50px; text-decoration:none; font-weight:900; font-size:10px; uppercase">Sair para Loja</a>
+        <h1 class="text-3xl font-[900] uppercase tracking-tighter">PAINEL <span class="text-red-600">ADMIN</span></h1>
+        <a href="index.html" style="background:#fff; color:#000; padding:10px 25px; border-radius:50px; text-decoration:none; font-weight:900; font-size:10px; text-transform:uppercase;">Sair</a>
     </header>
 
     <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
         <div class="lg:col-span-5 space-y-8">
+            
             <section class="admin-card">
-                <h2 class="text-red-600 font-black mb-6 uppercase text-sm">Lançar Novo Produto</h2>
+                <h2 class="text-red-600 font-[900] mb-6 uppercase text-sm tracking-widest">Lançar Novo Produto</h2>
                 <form id="product-form">
+                    <p class="text-[10px] mb-2 text-gray-500">FOTO DO PRODUTO</p>
                     <input type="file" id="image-input" class="admin-input" required>
                     <input type="text" id="nome" placeholder="NOME DO PRODUTO" class="admin-input" required>
                     <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="preco" placeholder="PREÇO (89.90)" class="admin-input" required>
+                        <input type="text" id="preco" placeholder="PREÇO (EX: 150.00)" class="admin-input" required>
                         <input type="number" id="estoque" placeholder="ESTOQUE" class="admin-input" required>
                     </div>
-                    <select id="categoria-select" class="admin-input"></select>
-                    <textarea id="descricao" placeholder="DESCRIÇÃO DO PRODUTO" class="admin-input h-32" required></textarea>
-                    <button type="submit" id="btn-submit" class="btn-submit">LANÇAR PRODUTO</button>
+                    <select id="categoria-select" class="admin-input" required></select>
+                    <textarea id="descricao" placeholder="DESCRIÇÃO BREVE" class="admin-input h-24" required></textarea>
+                    <button type="submit" id="btn-submit" class="btn-submit">LANÇAR NA VITRINE</button>
                 </form>
             </section>
 
             <section class="admin-card">
-                <h2 class="text-red-600 font-black mb-4 uppercase text-sm">Categorias</h2>
-                <div class="flex gap-2 mb-4">
-                    <input type="text" id="new-cat" placeholder="NOME" class="admin-input" style="margin-bottom:0">
-                    <button onclick="addCategory()" class="bg-white text-black px-4 rounded-lg font-black">+</button>
+                <h2 class="text-red-600 font-[900] mb-4 uppercase text-sm tracking-widest">Categorias</h2>
+                <div class="flex gap-2 mb-6">
+                    <input type="text" id="new-cat" placeholder="NOVA CATEGORIA" class="admin-input" style="margin-bottom:0">
+                    <button onclick="addCategory()" class="bg-white text-black px-6 rounded-lg font-black">+</button>
                 </div>
                 <div id="category-list" class="space-y-2"></div>
             </section>
-            
+
             <section class="admin-card">
-                <h2 class="text-red-600 font-black mb-4 uppercase text-sm">Banners Hero</h2>
+                <h2 class="text-red-600 font-[900] mb-4 uppercase text-sm tracking-widest">Banners Hero</h2>
                 <input type="file" id="banner-input" class="hidden" onchange="uploadBanner(this)">
-                <button onclick="document.getElementById('banner-input').click()" class="w-full border border-white/10 py-3 rounded-lg text-[10px] font-bold uppercase">+ Novo Banner</button>
-                <div id="banner-list" class="grid grid-cols-1 gap-2"></div>
+                <button onclick="document.getElementById('banner-input').click()" class="w-full border border-white/10 py-4 rounded-xl text-[10px] font-black uppercase hover:bg-white/5 transition">+ Adicionar Banner</button>
+                <div id="banner-list" class="grid grid-cols-1 gap-3 mt-6"></div>
             </section>
         </div>
 
         <div class="lg:col-span-7">
-            <h2 class="font-black mb-6 uppercase text-sm">Produtos Ativos na Ilha</h2>
-            <div id="admin-product-list" class="space-y-3"></div>
+            <h2 class="font-[900] mb-6 uppercase text-sm tracking-widest">Produtos Ativos na Ilha</h2>
+            <div id="admin-product-list" class="space-y-3 overflow-y-auto custom-scroll" style="max-height: 80vh;">
+                </div>
         </div>
     </main>
+
     <script src="js/admin.js"></script>
 </body>
 </html>
