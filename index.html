@@ -17,31 +17,32 @@
         </div>
     </aside>
 
-   <div id="cart-drawer">
+<div id="image-modal" onclick="this.style.display='none'"><img id="modal-img" src=""></div>
+
+    <header>
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center py-4">
+            <button onclick="toggleMenu(true)" class="text-white text-2xl">☰</button>
+            <img src="assets/logo.PNG" class="logo-img cursor-pointer h-16" onclick="location.reload()">
+            <button onclick="toggleCart(true)" class="relative">
+                🛒<span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">0</span>
+            </button>
+        </div>
+        <div class="max-w-xl mx-auto px-6 pb-4">
+            <input type="text" placeholder="BUSCAR..." class="w-full bg-[#111] p-3 rounded-sm border border-white/10 text-[10px] font-bold outline-none uppercase">
+        </div>
+    </header>
+
+    <div class="main-content">
+        <section class="hero-container bg-[#050505] overflow-hidden" style="height: 60vh;">
+            <div id="banner-slider" class="flex h-full transition-transform duration-700"></div>
+        </section>
+        <main id="product-grid" class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8"></main>
+    </div>
+    <div id="cart-drawer">
     <div class="p-8 pb-4 flex justify-between items-center border-b border-white/5">
         <h2 class="text-red-600 font-[900] text-2xl uppercase">Sacola</h2>
         <button onclick="toggleCart(false)" class="text-white text-xs border border-white/20 px-3 py-1 rounded">FECHAR X</button>
     </div>
-
-    <div class="cart-scroll-area custom-scroll">
-        <div id="cart-items" class="space-y-4 mb-10"></div>
-        
-        <form id="checkout-form" class="space-y-6">
-            <input type="text" id="cust-nome" placeholder="NOME COMPLETO" class="checkout-input" required>
-            <input type="tel" id="cust-tel" placeholder="WHATSAPP (DDD)" class="checkout-input" required>
-            <input type="text" id="cust-endereco" placeholder="ENDEREÇO (RUA, Nº, BAIRRO)" class="checkout-input">
-
-            <div class="border-t border-white/10 pt-6 mt-10">
-                <div class="flex justify-between text-2xl font-black mb-6 uppercase">
-                    <span>Total</span>
-                    <span id="total-final" class="text-red-600">R$ 0,00</span>
-                </div>
-                <button type="submit" class="btn-red w-full">💬 FINALIZAR NO WHATSAPP</button>
-            </div>
-        </form>
-    </div>
-</div>
-
     <div class="cart-scroll-area custom-scroll">
         <div id="cart-items" class="space-y-4 mb-10"></div>
         
@@ -71,28 +72,6 @@
         </form>
     </div>
 </div>
-
-<div id="image-modal" onclick="this.style.display='none'"><img id="modal-img" src=""></div>
-
-    <header>
-        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center py-4">
-            <button onclick="toggleMenu(true)" class="text-white text-2xl">☰</button>
-            <img src="assets/logo.PNG" class="logo-img cursor-pointer h-16" onclick="location.reload()">
-            <button onclick="toggleCart(true)" class="relative">
-                🛒<span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">0</span>
-            </button>
-        </div>
-        <div class="max-w-xl mx-auto px-6 pb-4">
-            <input type="text" placeholder="BUSCAR..." class="w-full bg-[#111] p-3 rounded-sm border border-white/10 text-[10px] font-bold outline-none uppercase">
-        </div>
-    </header>
-
-    <div class="main-content">
-        <section class="hero-container bg-[#050505] overflow-hidden" style="height: 60vh;">
-            <div id="banner-slider" class="flex h-full transition-transform duration-700"></div>
-        </section>
-        <main id="product-grid" class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8"></main>
-    </div>
 
     <script src="js/main.js"></script>
 </body>
