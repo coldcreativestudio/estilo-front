@@ -3,50 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESTILO DA ILHA</title>
+    <title>ESTILO DA ILHA | Streetwear</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="bg-black text-white antialiased">
     <div class="promo-bar">Frete Grátis p/ todo BR compras acima de R$ 399,90</div>
 
+    <aside id="sidebar">
+        <div class="p-8">
+            <img src="assets/logo.PNG" class="h-16 mb-10">
+            <nav id="sidebar-nav" class="flex flex-col gap-4"></nav>
+        </div>
+    </aside>
+
     <div id="cart-drawer">
-        <div class="p-8 pb-4 flex justify-between items-center border-b border-white/5">
-            <h2 class="text-red-600 font-black text-2xl uppercase">Sacola</h2>
-            <button onclick="toggleCart(false)" class="text-white text-xs border border-white/20 px-3 py-1 rounded">X</button>
+        <div class="p-8 flex flex-col h-full">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-red-600 font-black text-2xl uppercase">Sacola</h2>
+                <button onclick="toggleCart(false)" class="text-white text-xs border border-white/20 px-3 py-1 rounded">X</button>
+            </div>
+            <div id="cart-items" class="flex-1 overflow-y-auto space-y-4 custom-scroll"></div>
+            <div class="border-t border-white/10 pt-6 mt-4">
+                <div class="flex justify-between text-2xl font-black mb-6 uppercase"><span>Total</span><span id="total-final">R$ 0,00</span></div>
+                <button onclick="window.location.href='https://wa.me/5598984360341'" class="bg-red-600 w-full py-5 rounded-xl font-black uppercase tracking-widest text-xs">Finalizar no WhatsApp</button>
+            </div>
         </div>
-        
-        <div class="cart-scroll-area custom-scroll">
-            <div id="cart-items" class="mb-8"></div>
-            
-            <form id="checkout-form" class="space-y-6">
-                <div>
-                    <p class="text-[10px] font-black text-red-600 uppercase mb-3 tracking-widest">── Seus Dados ──</p>
-                    <input type="text" id="cust-nome" placeholder="NOME COMPLETO" class="checkout-input" required>
-                    <input type="tel" id="cust-tel" placeholder="WHATSAPP (DDD)" class="checkout-input" required>
-                    <input type="text" id="cust-endereco" placeholder="ENDEREÇO (Rua, Número, Bairro)" class="checkout-input" required>
-                </div>
+    </div>
 
-                <div>
-                    <p class="text-[10px] font-black text-red-600 uppercase mb-3 tracking-widest">── Entrega ──</p>
-                    <label class="radio-card"><input type="radio" name="entrega" value="Retirar na loja" data-price="0" checked><span>Retirar na loja (Grátis)</span></label>
-                    <label class="radio-card"><input type="radio" name="entrega" value="Entrega em casa" data-price="15"><span>Entrega em casa (+R$ 15,00)</span></label>
-                </div>
+    <div id="menu-overlay"></div>
 
-                <div>
-                    <p class="text-[10px] font-black text-red-600 uppercase mb-3 tracking-widest">── Pagamento ──</p>
-                    <div class="grid grid-cols-2 gap-2">
-                        <label class="radio-card"><input type="radio" name="pagamento" value="PIX" checked><span>PIX</span></label>
-                        <label class="radio-card"><input type="radio" name="pagamento" value="Dinheiro"><span>Dinheiro</span></label>
-                    </div>
-                </div>
-
-                <div class="border-t border-white/10 pt-6">
-                    <div class="flex justify-between text-2xl font-black mb-6 uppercase"><span>Total</span><span id="total-final" class="text-red-600">R$ 0,00</span></div>
-                    <button type="submit" class="btn-red shadow-lg shadow-red-600/20">Finalizar no WhatsApp</button>
-                </div>
-            </form>
+    <header>
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center py-4">
+            <button onclick="toggleMenu(true)" class="text-white text-2xl">☰</button>
+            <img src="assets/logo.PNG" class="logo-img cursor-pointer h-16" onclick="location.reload()">
+            <button onclick="toggleCart(true)" class="relative">
+                🛒<span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">0</span>
+            </button>
         </div>
+        <div class="max-w-xl mx-auto px-6 pb-4">
+            <input type="text" placeholder="BUSCAR..." class="w-full bg-[#111] p-3 rounded-sm border border-white/10 text-[10px] font-bold outline-none uppercase">
+        </div>
+    </header>
+
+    <div class="main-content">
+        <section class="hero-container bg-[#050505] overflow-hidden" style="height: 60vh;">
+            <div id="banner-slider" class="flex h-full transition-transform duration-700"></div>
+        </section>
+        <main id="product-grid" class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8"></main>
     </div>
 
     <script src="js/main.js"></script>
