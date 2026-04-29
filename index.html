@@ -17,44 +17,43 @@
         </div>
     </aside>
 
-    <div id="cart-drawer">
-        <div class="p-8 flex flex-col h-full">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-red-600 font-black text-2xl uppercase">Sacola</h2>
-                <button onclick="toggleCart(false)" class="text-white text-xs border border-white/20 px-3 py-1 rounded">X</button>
+   <div id="cart-drawer">
+    <div class="p-8 pb-4 flex justify-between items-center border-b border-white/5">
+        <h2 class="text-red-600 font-[900] text-2xl uppercase">Sua Sacola</h2>
+        <button onclick="toggleCart(false)" class="text-white text-xs border border-white/20 px-3 py-1 rounded">X</button>
+    </div>
+
+    <div class="cart-scroll-area custom-scroll">
+        <div id="cart-items" class="space-y-4 mb-10"></div>
+        
+        <form id="checkout-form" class="space-y-6">
+            <p class="text-[9px] font-black text-red-600 uppercase tracking-widest">── Seus Dados ──</p>
+            <input type="text" id="cust-nome" placeholder="NOME COMPLETO" class="checkout-input" required>
+            <input type="tel" id="cust-tel" placeholder="WHATSAPP (DDD)" class="checkout-input" required>
+            <input type="text" id="cust-endereco" placeholder="ENDEREÇO (RUA, Nº, BAIRRO)" class="checkout-input">
+
+            <p class="text-[9px] font-black text-red-600 uppercase tracking-widest">── Entrega ──</p>
+            <label class="radio-card"><input type="radio" name="entrega" value="Retirar na loja" data-price="0" checked><span>Retirar na loja (Grátis)</span></label>
+            <label class="radio-card"><input type="radio" name="entrega" value="Entrega em casa" data-price="15"><span>Entrega em casa (+R$ 15,00)</span></label>
+
+            <p class="text-[9px] font-black text-red-600 uppercase tracking-widest">── Pagamento ──</p>
+            <div class="grid grid-cols-2 gap-2">
+                <label class="radio-card"><input type="radio" name="pagamento" value="PIX" checked><span>PIX</span></label>
+                <label class="radio-card"><input type="radio" name="pagamento" value="Dinheiro"><span>Dinheiro</span></label>
             </div>
-            <div id="cart-items" class="flex-1 overflow-y-auto space-y-4 custom-scroll"></div>
-            <div class="border-t border-white/10 pt-6 mt-4">
-                <div class="flex justify-between text-2xl font-black mb-6 uppercase"><span>Total</span><span id="total-final">R$ 0,00</span></div>
-                <button onclick="window.location.href='https://wa.me/5598984360341'" class="bg-red-600 w-full py-5 rounded-xl font-black uppercase tracking-widest text-xs">Finalizar no WhatsApp</button>
-            <form id="checkout-form" class="space-y-6">
-    
-    <input type="text" id="cust-nome" placeholder="NOME COMPLETO" class="checkout-input" required>
-    <input type="tel" id="cust-tel" placeholder="WHATSAPP (DDD)" class="checkout-input" required>
-    
-    <input type="text" id="cust-endereco" placeholder="ENDEREÇO (RUA, Nº, BAIRRO)" class="checkout-input">
 
-    <div class="space-y-2">
-        <p class="text-[9px] font-black text-red-600 uppercase tracking-widest">── Entrega ──</p>
-        <label class="radio-card"><input type="radio" name="entrega" value="Retirar na loja" data-price="0" checked><span>Retirar na loja (Grátis)</span></label>
-        <label class="radio-card"><input type="radio" name="entrega" value="Entrega em casa" data-price="15"><span>Entrega em casa (+R$ 15,00)</span></label>
-    </div>
-
-    <div class="grid grid-cols-2 gap-2">
-        <label class="radio-card"><input type="radio" name="pagamento" value="PIX" checked><span>PIX</span></label>
-        <label class="radio-card"><input type="radio" name="pagamento" value="Dinheiro"><span>Dinheiro</span></label>
-    </div>
-
-    <textarea id="cust-obs" placeholder="OBSERVAÇÕES..." class="checkout-input h-20 resize-none pt-4"></textarea>
-
-    <button type="submit" class="btn-red w-full">💬 FINALIZAR NO WHATSAPP</button>
-
-</form>
+            <div class="border-t border-white/10 pt-6 mt-6">
+                <div class="flex justify-between text-2xl font-black mb-6 uppercase">
+                    <span>Total</span>
+                    <span id="total-final" class="text-red-600">R$ 0,00</span>
+                </div>
+                <button type="submit" class="btn-red w-full">💬 FINALIZAR NO WHATSAPP</button>
             </div>
-        </div>
+        </form>
     </div>
+</div>
 
-    <div id="menu-overlay"></div>
+<div id="image-modal" onclick="this.style.display='none'"><img id="modal-img" src=""></div>
 
     <header>
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center py-4">

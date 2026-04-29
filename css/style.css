@@ -32,11 +32,26 @@ header {
 }
 
 /* SIDEBAR E SACOLA */
-#sidebar, #cart-drawer {
-    position: fixed; top: 0; height: 100%; width: 100%;
-    background: #000; z-index: 2000;
-    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+#sidebar, /* 1. Faz o carrinho ocupar a tela toda e se comportar como uma coluna */
+#cart-drawer {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Ocupa a altura total */
 }
+
+/* 2. Cria a área que vai rolar (onde ficam os itens e o formulário) */
+.cart-scroll-area {
+    flex: 1; /* Ocupa o espaço entre o topo e o fundo */
+    overflow-y: auto; /* Habilita o scroll aqui dentro */
+    padding: 20px 30px;
+}
+
+/* 3. Estilo do Modal de Zoom (Caso não tenha) */
+#image-modal {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+    z-index: 3000; display: none; align-items: center; justify-content: center;
+}
+#image-modal img { max-width: 90%; max-height: 80%; object-fit: contain; }
 #sidebar { left: 0; max-width: 320px; transform: translateX(-100%); border-right: 1px solid rgba(255,255,255,0.1); }
 #cart-drawer { right: 0; max-width: 480px; transform: translateX(100%); border-left: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; }
 
