@@ -19,9 +19,28 @@
 
    <div id="cart-drawer">
     <div class="p-8 pb-4 flex justify-between items-center border-b border-white/5">
-        <h2 class="text-red-600 font-[900] text-2xl uppercase">Sua Sacola</h2>
-        <button onclick="toggleCart(false)" class="text-white text-xs border border-white/20 px-3 py-1 rounded">X</button>
+        <h2 class="text-red-600 font-[900] text-2xl uppercase">Sacola</h2>
+        <button onclick="toggleCart(false)" class="text-white text-xs border border-white/20 px-3 py-1 rounded">FECHAR X</button>
     </div>
+
+    <div class="cart-scroll-area custom-scroll">
+        <div id="cart-items" class="space-y-4 mb-10"></div>
+        
+        <form id="checkout-form" class="space-y-6">
+            <input type="text" id="cust-nome" placeholder="NOME COMPLETO" class="checkout-input" required>
+            <input type="tel" id="cust-tel" placeholder="WHATSAPP (DDD)" class="checkout-input" required>
+            <input type="text" id="cust-endereco" placeholder="ENDEREÇO (RUA, Nº, BAIRRO)" class="checkout-input">
+
+            <div class="border-t border-white/10 pt-6 mt-10">
+                <div class="flex justify-between text-2xl font-black mb-6 uppercase">
+                    <span>Total</span>
+                    <span id="total-final" class="text-red-600">R$ 0,00</span>
+                </div>
+                <button type="submit" class="btn-red w-full">💬 FINALIZAR NO WHATSAPP</button>
+            </div>
+        </form>
+    </div>
+</div>
 
     <div class="cart-scroll-area custom-scroll">
         <div id="cart-items" class="space-y-4 mb-10"></div>

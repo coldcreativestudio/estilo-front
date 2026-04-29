@@ -92,32 +92,58 @@ function addToCart(id, nome, preco, imagem) {
     toggleCart(true);
 }
 
+// --- CORREÇÃO DA RENDERIZAÇÃO DA SACOLA ---
 function updateCartUI() {
     const container = document.getElementById('cart-items');
     const totalEl = document.getElementById('total-final');
-    
-    // 1. Renderiza os itens (Isso vai fazer os produtos aparecerem)
-    if (container) {
-        container.innerHTML = cart.map(i => `
-            <div class="flex justify-between items-center bg-[#080808] p-4 rounded-xl border border-white/5">
-                <div class="flex gap-4 items-center">
-                    <img src="${i.imagem}" class="w-14 h-14 rounded-lg object-cover">
-                    <div>
-                        <h5 class="text-[10px] font-black uppercase">${i.nome}</h5>
-                        <p class="text-[9px] text-gray-500">${i.qty}x R$ ${i.preco.toFixed(2)}</p>
-                    </div>
-                </div>
-                <button onclick="removeFromCart('${i.id}')" class="text-red-600 font-bold p-2">×</button>
-            </div>
-        `).join('');
+    if (!container) return;
+
+    // Se o carrinho estiver vazio
+    if (cart.length === 0) {
+        container.innerHTML = `<p class="text-center text-gray-500 py-10 uppercase font-bold">Sua sacola está vazia</p>`;
+        if (totalEl) totalEl.innerText = "R$ 0,00";
+        return;
     }
 
-    // 2. Calcula o Total
+    // Renderiza cada item do carrinho
+    container.innerHTML = cart.map(item => `
+        <div class="flex justify-between items-center bg-[#080808] p-4 rounded-xl border border-white/5">
+            <div class="flex gap-4 items-center">
+                <img src="${item.imagem}" class="w-14 h-14 rounded-lg object-cover">
+                <div>
+                    <h5 class="text-[10px] font-black uppercase leading-tight">${item.nome}</h5>
+                    <p class="text-[9px] text-gray-400">${item.qty}x R$ ${item.preco.toFixed(2)}</p>
+                </div>
+            </div>
+            <button onclick="removeFromCart('${item.id}')" class="text-red-600 font-bold p-2">×</button>
+        </div>
+    `).join('');
+
+    // Atualiza o Total
     const subtotal = cart.reduce((acc, i) => acc + (i.preco * i.qty), 0);
     const frete = parseFloat(document.querySelector('input[name="entrega"]:checked')?.dataset.price || 0);
     if (totalEl) totalEl.innerText = `R$ ${(subtotal + frete).toFixed(2)}`;
     
+    // Atualiza contador no ícone do carrinho
     document.getElementById('cart-count').innerText = cart.reduce((acc, i) => acc + i.qty, 0);
+}
+
+// --- LÓGICA DO ZOOM DO BANNER ---
+function renderBanners(banners) {
+    const slider = document.getElementById('banner-slider');
+    if (!slider) return;
+    slider.innerHTML = banners.map(b => `
+        <img src="${b.imagem_url}" onclick="openZoom('${b.imagem_url}')" class="w-full h-full object-cover flex-shrink-0 cursor-zoom-in">
+    `).join('');
+}
+
+function openZoom(url) {
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    if (modal && modalImg) {
+        modalImg.src = url;
+        modal.style.display = 'flex';
+    }
 }
 
 function removeFromCart(id) { cart = cart.filter(i => i.id !== id); localStorage.setItem('ilha_cart', JSON.stringify(cart)); updateCartUI(); }

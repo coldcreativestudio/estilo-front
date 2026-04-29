@@ -26,17 +26,37 @@ header {
 .logo-img { max-height: 70px !important; width: auto; object-fit: contain; transition: 0.3s; }
 .logo-img:hover { transform: scale(1.1); }
 .main-content {
-    margin-top: 200px; /* Aumentado para não cortar nada embaixo do header */
+    margin-top: 180px; 
     min-height: 100vh;
-    padding-bottom: 80px;
 }
 
 /* SIDEBAR E SACOLA */
 #sidebar, /* 1. Faz o carrinho ocupar a tela toda e se comportar como uma coluna */
 #cart-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 450px;
+    height: 100vh;
+    background: #000;
+    z-index: 2000;
+    transform: translateX(100%); /* Começa escondido */
+    transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
     display: flex;
-    flex-direction: column;
-    height: 100vh; /* Ocupa a altura total */
+    flex-direction: column; /* Organiza em coluna: Topo > Itens > Botão */
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#cart-drawer.open {
+    transform: translateX(0); /* Desliza para dentro */
+}
+
+/* 2. Área que VAI ROLAR (onde os produtos e o form ficam) */
+.cart-scroll-area {
+    flex: 1; /* Ocupa o máximo de espaço possível */
+    overflow-y: auto; /* Habilita o scroll apenas aqui dentro */
+    padding: 20px 30px;
 }
 
 /* 2. Cria a área que vai rolar (onde ficam os itens e o formulário) */
