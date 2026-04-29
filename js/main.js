@@ -13,25 +13,32 @@ async function fetchData() {
         const [pRes, cRes, bRes] = await Promise.all([
             fetch(`${API}/products`), fetch(`${API}/categories`), fetch(`${API}/banners`)
         ]);
-
-        if (!pRes.ok) throw new Error("Erro ao buscar produtos");
-
         allProducts = await pRes.json();
-        const categories = await cRes.json();
-        const banners = await bRes.json();
-
         renderProducts(allProducts);
-        renderSidebar(categories);
-        renderBanners(banners);
+        renderSidebar(await cRes.json());
+        renderBanners(await bRes.json());
     } catch (e) {
-        console.error("ERRO CRÍTICO:", e);
-        document.getElementById('product-grid').innerHTML = '<p class="col-span-full text-center text-red-600 font-bold uppercase py-20">Erro ao carregar vitrine. Verifique o link da API.</p>';
+        console.error("Erro na API:", e);
+        document.getElementById('product-grid').innerHTML = '<p class="col-span-full text-center text-red-600 font-bold uppercase py-20">Erro ao carregar a Ilha.</p>';
     }
+}
+
+// FILTRO DAS CATEGORIAS (O QUE FALTAVA)
+function filterByCategory(catName) {
+    toggleMenu(false); // Fecha o menu lateral
+    if (catName === 'TODOS') {
+        renderProducts(allProducts);
+    } else {
+        const filtered = allProducts.filter(p => p.categoria.toUpperCase() === catName.toUpperCase());
+        renderProducts(filtered);
+    }
+    // Rola para os produtos
+    document.getElementById('product-grid').scrollIntoView({ behavior: 'smooth' });
 }
 
 function renderProducts(list) {
     const grid = document.getElementById('product-grid');
-    if (!grid) return;
+    if(!grid) return;
     grid.innerHTML = list.map(p => `
         <div class="cursor-pointer group" onclick="window.location.href='product.html?id=${p._id}'">
             <div class="relative aspect-square rounded-[24px] overflow-hidden bg-[#111] mb-4">
@@ -46,12 +53,16 @@ function renderProducts(list) {
 
 function renderSidebar(cats) {
     const nav = document.getElementById('sidebar-nav');
-    if (!nav) return;
-    nav.innerHTML = cats.map(c => `
-        <button class="text-left text-white font-black uppercase text-xl hover:text-red-600 transition border-b border-white/5 pb-2">
+    if(!nav) return;
+    // Botão "Ver Tudo"
+    let html = `<button onclick="filterByCategory('TODOS')" class="text-left text-white font-black uppercase text-xl hover:text-red-600 transition border-b border-white/5 pb-2">VER TUDO</button>`;
+    // Botões das Categorias
+    html += cats.map(c => `
+        <button onclick="filterByCategory('${c.nome}')" class="text-left text-white font-black uppercase text-xl hover:text-red-600 transition border-b border-white/5 pb-2">
             ${c.nome}
         </button>
     `).join('');
+    nav.innerHTML = html;
 }
 
 function renderBanners(banners) {
@@ -60,6 +71,7 @@ function renderBanners(banners) {
     slider.innerHTML = banners.map(b => `<img src="${b.imagem_url}" class="w-full h-full object-cover flex-shrink-0">`).join('');
 }
 
+// CARRINHO E MENUS
 function addToCart(id, nome, preco, imagem) {
     const item = cart.find(i => i.id === id);
     item ? item.qty++ : cart.push({ id, nome, preco, imagem, qty: 1 });
@@ -72,9 +84,7 @@ function updateCartUI() {
     const container = document.getElementById('cart-items');
     const count = document.getElementById('cart-count');
     const totalEl = document.getElementById('total-final');
-    
     if (count) count.innerText = cart.reduce((acc, i) => acc + i.qty, 0);
-    
     if (container) {
         container.innerHTML = cart.map(i => `
             <div class="flex justify-between items-center bg-[#080808] p-4 rounded-xl border border-white/5">
@@ -86,34 +96,10 @@ function updateCartUI() {
             </div>
         `).join('');
     }
-    
-    if (totalEl) {
-        const total = cart.reduce((acc, i) => acc + (i.preco * i.qty), 0);
-        totalEl.innerText = `R$ ${total.toFixed(2)}`;
-    }
+    if (totalEl) totalEl.innerText = `R$ ${cart.reduce((acc, i) => acc + (i.preco * i.qty), 0).toFixed(2)}`;
 }
 
-function removeFromCart(id) {
-    cart = cart.filter(i => i.id !== id);
-    localStorage.setItem('ilha_cart', JSON.stringify(cart));
-    updateCartUI();
-}
-
-function toggleMenu(o) {
-    const s = document.getElementById('sidebar');
-    const ov = document.getElementById('menu-overlay');
-    if (s) s.classList.toggle('open', o);
-    if (ov) ov.classList.toggle('active', o);
-}
-
-function toggleCart(o) {
-    const d = document.getElementById('cart-drawer');
-    const ov = document.getElementById('menu-overlay');
-    if (d) d.classList.toggle('open', o);
-    if (ov) ov.classList.toggle('active', o);
-}
-
-document.getElementById('menu-overlay')?.addEventListener('click', () => {
-    toggleMenu(false);
-    toggleCart(false);
-});
+function removeFromCart(id) { cart = cart.filter(i => i.id !== id); localStorage.setItem('ilha_cart', JSON.stringify(cart)); updateCartUI(); }
+function toggleMenu(o) { document.getElementById('sidebar').classList.toggle('open', o); document.getElementById('menu-overlay').classList.toggle('active', o); }
+function toggleCart(o) { document.getElementById('cart-drawer').classList.toggle('open', o); document.getElementById('menu-overlay').classList.toggle('active', o); }
+document.getElementById('menu-overlay').addEventListener('click', () => { toggleMenu(false); toggleCart(false); });
